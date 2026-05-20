@@ -179,7 +179,7 @@ body { background: #0a0014; }
   <div id="love-msg">520 快乐，我的宝贝 💕</div>
   <div id="date-text">2026 . 05 . 20</div>
 </div>
-<button id="replay-btn" onclick="replayGame()">再来一次 ↻</button>
+<button id="replay-btn">再来一次 ↻</button>
 
 <script>
 (function() {
@@ -238,6 +238,7 @@ body { background: #0a0014; }
 
   document.addEventListener('touchstart', function(e) {
     if (!started || revealed) return;
+    if (e.target.id === 'replay-btn') return;
     e.preventDefault(); isDrawing = true;
     handleDraw(e.touches[0].clientX, e.touches[0].clientY);
   }, {passive: false});
@@ -246,7 +247,7 @@ body { background: #0a0014; }
     e.preventDefault();
     handleDraw(e.touches[0].clientX, e.touches[0].clientY);
   }, {passive: false});
-  document.addEventListener('touchend', function(e) { e.preventDefault(); isDrawing = false; }, {passive: false});
+  document.addEventListener('touchend', function(e) { if (e.target.id === 'replay-btn') return; e.preventDefault(); isDrawing = false; }, {passive: false});
 
   function handleDraw(x, y) {
     if (revealed) return;
@@ -533,6 +534,10 @@ body { background: #0a0014; }
     ctx.fillStyle = 'rgba(10,0,20,1)';
     ctx.fillRect(0, 0, W, H);
   };
+
+  var replayBtn = document.getElementById('replay-btn');
+  replayBtn.addEventListener('click', function(e) { e.stopPropagation(); window.replayGame(); });
+  replayBtn.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); window.replayGame(); });
 })();
 </script>
 </body>
